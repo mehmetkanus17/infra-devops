@@ -1,0 +1,6 @@
+/terraform-infra/.terraform/
+/terraform-infra/*.tfstate
+/terraform-infra/*.tfstate.backup
+/terraform-infra/.terraform.lock.hcl
+/terraform-infra/.terraform.lock.hcl
+haproxy_manuel.sh

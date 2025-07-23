@@ -1,0 +1,56 @@
+expose:
+  # Set how to expose the service. Set the type as "ingress", "clusterIP", "nodePort" or "loadBalancer"
+  # and fill the information in the corresponding section
+  type: ingress
+  tls:
+    # Enable TLS or not.
+    # Delete the "ssl-redirect" annotations in "expose.ingress.annotations" when TLS is disabled and "expose.type" is "ingress"
+    # Note: if the "expose.type" is "ingress" and TLS is disabled,
+    # the port must be included in the command when pulling/pushing images.
+    # Refer to https://github.com/goharbor/harbor/issues/5291 for details.
+    enabled: true
+    # The source of the tls certificate. Set as "auto", "secret"
+    # or "none" and fill the information in the corresponding section
+    # 1) auto: generate the tls certificate automatically
+    # 2) secret: read the tls certificate from the specified secret.
+    # The tls certificate can be generated manually or by cert manager
+    # 3) none: configure no tls certificate for the ingress. If the default
+    # tls certificate is configured in the ingress controller, choose this option
+    certSource: secret #auto
+    auto:
+      # The common name used to generate the certificate, it's necessary
+      # when the type isn't "ingress"
+      commonName: ""
+    secret:
+      # The name of secret which contains keys named:
+      # "tls.crt" - the certificate
+      # "tls.key" - the private key
+      secretName: "tls-harbor"
+  ingress:
+    hosts:
+      core: harbor.prod.mehmetkanus.com
+    # set to the type of ingress controller if it has specific requirements.
+    # leave as `default` for most ingress controllers.
+    # set to `gce` if using the GCE ingress controller
+    # set to `ncp` if using the NCP (NSX-T Container Plugin) ingress controller
+    # set to `alb` if using the ALB ingress controller
+    # set to `f5-bigip` if using the F5 BIG-IP ingress controller
+    controller: default
+    ## Allow .Capabilities.KubeVersion.Version to be overridden while creating ingress
+    kubeVersionOverride: ""
+    className: "nginx"
+    annotations:
+      # note different ingress controllers may require a different ssl-redirect annotation
+      # for Envoy, use ingress.kubernetes.io/force-ssl-redirect: "true" and remove the nginx lines below
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+
+# If Harbor is deployed behind the proxy, set it as the URL of proxy
+externalURL: https://harbor.prod.mehmetkanus.com
+
+# existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
+harborAdminPassword: "Mkanus-123*-"

@@ -1,0 +1,13 @@
+# Copyright Broadcom, Inc. All Rights Reserved.
+# SPDX-License-Identifier: APACHE-2.0
+
+## @section Global parameters
+## Please, note that this will override the parameters, including dependencies, configured to use the global value
+##
+global:
+  postgresql:
+    auth:
+      postgresPassword: "mkanus123"
+      username: "mkanus"
+      password: "mkanus123"
+      database: "mkanus"

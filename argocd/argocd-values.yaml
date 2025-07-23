@@ -1,0 +1,17 @@
+## Argo CD configuration
+## Ref: https://github.com/argoproj/argo-cd
+
+## Argo Configs
+configs:
+  # General Argo CD configuration. Any values you put under `.configs.cm` are passed to argocd-cm ConfigMap.
+  ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cm.yaml
+  cm:
+    # -- Create the argocd-cm configmap for [declarative setup]
+    create: true
+    # -- Timeout to discover if a new manifests version got published to the repository
+    timeout.reconciliation: 15s
+
+    # -- Timeout to refresh application data as well as target manifests cache
+    timeout.hard.reconciliation: 0s
+
+# kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo

@@ -1,0 +1,16 @@
+worker:
+  replicas: 10
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
+loadtest:
+  name: my-app-loadtest
+  locust_locustfile: my_app_test.py
+  locust_locustfile_path: "/mnt/locust"
+  locust_locustfile_configmap: "my-app-locustfile"
+  locust_lib_configmap: ""
+  locust_host: http://my-app.prod.svc.cluster.local:80 
