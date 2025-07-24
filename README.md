@@ -11,7 +11,7 @@ Bu repo, Azure Cloud ortamında on-premise mimariye benzer şekilde çalışacak
     *   `ansible.sh`: Kubespray ile Kubernetes Kümesi Kurulumu
     *   `haproxy.sh`: HAProxy ve Kubernetes Eklentileri Kurulumu
 4.  Dizin Yapısı
-5.  Case Gereksinimleri ile Uyum
+5.  Proje Gereksinimleri ile Uyum
 
 ## 1. Genel Bakış
 
@@ -198,7 +198,7 @@ Bu betik, Kubernetes kümesinin tam işlevselliğini sağlamak için gerekli tü
     └── external-secret-prod.yaml
 ```
 
-## 5. Case Gereksinimleri ile Uyum
+## 5. Proje Gereksinimleri ile Uyum
 
 Bu altyapı kurulumu, DevOps projesi tarafından belirtilen altyapı gereksinimlerini tam olarak karşılamaktadır:
 
