@@ -11,7 +11,6 @@ Bu repo, Azure Cloud ortamında on-premise mimariye benzer şekilde çalışacak
     *   `ansible.sh`: Kubespray ile Kubernetes Kümesi Kurulumu
     *   `haproxy.sh`: HAProxy ve Kubernetes Eklentileri Kurulumu
 4.  Dizin Yapısı
-5.  Proje Gereksinimleri ile Uyum
 
 ## 1. Genel Bakış
 
@@ -197,22 +196,3 @@ Bu betik, Kubernetes kümesinin tam işlevselliğini sağlamak için gerekli tü
     ├── external-secret-dev.yaml
     └── external-secret-prod.yaml
 ```
-
-## 5. Proje Gereksinimleri ile Uyum
-
-Bu altyapı kurulumu, DevOps projesi tarafından belirtilen altyapı gereksinimlerini tam olarak karşılamaktadır:
-
-*   **a. Terraform/Ansible (sanal makine provizyonlama) ve Kubespray kullanarak multi-master ve multi-worker bir Kubernetes cluster'i kurulacak. Kurulan cluster’da çalışacak uygulamaların ingress ile dışarıya expose edilmesi isteneceğinden varsa buna yönelik kurulumlar da (Haproxy kurulumu vb.) bu aşamada yapılacak.**
-    *   **Terraform**: `infra.sh` betiği, `terraform-infra/` dizinindeki Terraform yapılandırmalarını kullanarak sanal makineleri (master, worker, haproxy, nfs) provizyonlar. Bu, sanal makine provizyonlama gereksinimini karşılar.
-    *   **Kubespray**: `ansible.sh` betiği, Kubespray kullanarak multi-master ve multi-worker Kubernetes kümesini kurar. Bu, küme kurulumu gereksinimini karşılar.
-    *   **HAProxy**: `haproxy.sh` betiği, HAProxy yük dengeleyiciyi kurar ve yapılandırır. Bu, Kubernetes API sunucuları ve Ingress Controller servisleri için dışarıya erişim ve yük dengeleme sağlar.
-    *   **Nginx Ingress Controller**: `haproxy.sh` betiği içinde Nginx Ingress Controller kurulur ve HAProxy tarafından NodePort servisleri üzerinden dışarıya açılır. Bu, uygulamaların Ingress ile dışarıya expose edilmesi gereksinimini karşılar.
-
-*   **b. NFS ile PVC oluşturmaya yönelik altyapı oluşturulacak.**
-    *   `infra.sh` betiği, Terraform ile bir NFS sunucusu provizyonlar. `haproxy.sh` betiği ise Kubernetes kümesi üzerinde `nfs-subdir-external-provisioner`'ı kurarak NFS tabanlı Persistent Volume Claim (PVC) oluşturma altyapısını sağlar. Bu, kalıcı depolama gereksinimini karşılar.
-
-*   **c. Hashicorp Vault kurulumu yapılarak K8S ile bağlantısı oluşturulacak.**
-    *   `haproxy.sh` betiği, HashiCorp Vault'u Kubernetes kümesi üzerine kurar. Ayrıca, Vault'un Kubernetes kimlik doğrulama yöntemini yapılandırarak Kubernetes servis hesapları ile Vault arasında bağlantı kurar. `vault-external-secret/` dizinindeki dosyalar (ClusterSecretStore, ExternalSecret) bu entegrasyonu tamamlar. Bu, sır yönetimi gereksinimini karşılar.
-
-*   **ç. Infra için geliştirilecek kod “infra-[aday_ismi]” adında bir git reposunda bulunacak.**
-    *   Bu repo (`infra-mehmetkanus`), altyapı için geliştirilen tüm kodları (Terraform, Ansible betikleri, Kubernetes manifestleri, Helm değerleri) içerir ve bu gereksinime uygun olarak yapılandırılmıştır.
